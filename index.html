@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F0B1E">
 <title>Mewza™: scripts, exploits and macros for Roblox and Minecraft</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%90%B1%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,75 +11,127 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 
+/* ── dark is the design, not a preference ───────────────────────────────── */
 :root{
-  --bg:#F5F2FA;--surf:#FFFFFF;--code:#EFEAF8;--line:#D9D2EA;--text:#1B1530;--mute:#5F5780;
-  --accent:#5B47E0;--on-accent:#FFFFFF;--ok:#0E8F6B;--logo:invert(1);
+  color-scheme:dark;
+  --bg:#0F0B1E;--surf:#17122B;--code:#0B0817;--line:#2C2549;--text:#F3EFFB;--mute:#A79DC4;
+  --accent:#A99CFF;--on-accent:#120E22;--ok:#86E3C4;--danger:#FF7A9C;
   --sans:"Bricolage Grotesque",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
 }
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){--bg:#17122B;--surf:#1F1938;--code:#120E22;--line:#362D57;--text:#F2EDF9;--mute:#A79DC4;--accent:#A99CFF;--on-accent:#17122B;--ok:#86E3C4;--logo:none}
-}
-:root[data-theme="dark"]{--bg:#17122B;--surf:#1F1938;--code:#120E22;--line:#362D57;--text:#F2EDF9;--mute:#A79DC4;--accent:#A99CFF;--on-accent:#17122B;--ok:#86E3C4;--logo:none}
 *,*::before,*::after{box-sizing:border-box}
-html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg);-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--text);font:400 1rem/1.55 var(--sans)}
+html{background:var(--bg);color-scheme:dark;-webkit-text-size-adjust:100%;scroll-padding-top:16px}
+body{
+  margin:0;min-height:100dvh;overflow-x:clip;
+  display:flex;flex-direction:column;
+  background:
+    radial-gradient(900px 520px at 50% -220px,rgba(169,156,255,.16),transparent 70%),
+    var(--bg);
+  color:var(--text);font:400 1rem/1.55 var(--sans);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+main{flex:1 0 auto;width:100%}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
-.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.wrap{width:100%;max-width:1120px;margin-inline:auto;padding-inline:20px}
 .logo{display:block;color:var(--text)}
 
-header .wrap{display:flex;align-items:center;gap:20px;height:64px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;font-size:1.15rem;letter-spacing:-.01em}
+header{border-bottom:1px solid transparent}
+header .wrap{display:flex;align-items:center;gap:16px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;font-size:1.15rem;letter-spacing:-.01em;white-space:nowrap}
 .brand .logo{width:34px;height:auto}
-nav{display:flex;gap:4px;margin-left:auto}
+nav{display:none;gap:4px}
 nav a{padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--mute);font-weight:600;font-size:.95rem}
 nav a:hover{color:var(--text);background:var(--surf)}
-.btn{display:inline-block;border:1px solid var(--line);background:var(--surf);color:var(--text);font:600 .92rem var(--sans);padding:9px 14px;border-radius:8px;text-decoration:none;cursor:pointer}
+@media(min-width:720px){nav{display:flex;margin-left:auto}}
+.auth{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:.9rem}
+@media(min-width:720px){.auth{margin-left:8px}}
+@media(max-width:559px){.auth .who{display:none}}
+
+.btn{display:inline-block;border:1px solid var(--line);background:var(--surf);color:var(--text);font:600 .92rem var(--sans);padding:9px 14px;border-radius:8px;text-decoration:none;cursor:pointer;line-height:1.2}
 .btn:hover{border-color:var(--accent)}
 .btn.primary{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.btn.primary:hover{filter:brightness(1.08)}
 
 h1{font-weight:800;font-size:clamp(2.4rem,7vw,4rem);line-height:1.02;letter-spacing:-.035em;margin:0 0 20px;text-wrap:balance}
+h2{font-weight:800;font-size:clamp(1.6rem,4vw,2.2rem);letter-spacing:-.025em;line-height:1.1;margin:0}
 .lede{font-size:1.15rem;color:var(--mute);max-width:34em;margin:0 0 28px}
 .cta{display:flex;flex-wrap:wrap;gap:10px}
 .facts{display:flex;flex-wrap:wrap;gap:6px 22px;margin:36px 0 0;padding:0;list-style:none;color:var(--mute);font-size:.92rem}
 .facts b{color:var(--text);font-weight:600}
 
+.hero{display:grid;gap:28px;padding-block:48px 72px;align-items:center;justify-items:start}
+.hero-cat{width:120px;height:auto;aspect-ratio:450/413;justify-self:center}
+@media(min-width:900px){
+  .hero{grid-template-columns:1.3fr .7fr;gap:56px;padding-block:88px 104px}
+  .hero-cat{width:280px}
+}
 
-.repos{padding:0 0 88px}
-.repos-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:16px;margin-bottom:18px}
-h2{font-weight:800;font-size:clamp(1.6rem,4vw,2.2rem);letter-spacing:-.025em;line-height:1.1;margin:0}
-.repos h2{margin-bottom:18px}
+/* ── repositories ──────────────────────────────────────────────────────── */
+.repos{padding-block:0 88px}
+.head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.repos h2{margin:0}
 .bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:14px}
-.cat{display:inline-flex;gap:8px;align-items:center;font:600 .9rem var(--sans);background:var(--accent);color:var(--on-accent);padding:8px 14px;border-radius:999px}
+.cat{display:inline-flex;gap:8px;align-items:center;font:600 .9rem var(--sans);background:transparent;color:var(--mute);border:1px solid var(--line);padding:8px 14px;border-radius:999px;cursor:pointer}
 .cat span{opacity:.75;font-weight:500}
-.search{position:relative;flex:1 1 100%;margin-left:auto}
-@media(min-width:560px){.search{flex:0 1 340px}}
+.cat[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.cat[aria-pressed="true"] span{opacity:.85}
+.search{position:relative;flex:1 1 100%}
+@media(min-width:560px){.search{flex:0 1 340px;margin-left:auto}}
 .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--mute);pointer-events:none}
 .search input{width:100%;font:400 .95rem var(--sans);color:var(--text);background:var(--surf);border:1px solid var(--line);border-radius:10px;padding:10px 12px 10px 38px}
 .search input::placeholder{color:var(--mute)}
-.search input:focus{border-color:var(--accent)}
+.search input:focus{border-color:var(--accent);outline:none}
 .list{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:14px;background:var(--surf);overflow:hidden}
-.row{display:grid;gap:4px 16px;padding:18px 20px;border-top:1px solid var(--line)}
+.row{display:block;padding:18px 20px;border-top:1px solid var(--line)}
 .row:first-child{border-top:0}
 .row[hidden]{display:none}
-@media(min-width:720px){.row{grid-template-columns:1fr auto;align-items:center}}
-.name{font-family:var(--mono);font-weight:500;font-size:.98rem;color:var(--accent);text-decoration:none}
+.top{display:grid;gap:4px 16px}
+@media(min-width:720px){.top{grid-template-columns:1fr auto;align-items:center}}
+.name{font-family:var(--mono);font-weight:500;font-size:.98rem;color:var(--accent);text-decoration:none;overflow-wrap:anywhere}
 .name:hover{text-decoration:underline}
-.desc{margin:2px 0 0;color:var(--mute);font-size:.95rem}
-.meta{display:flex;gap:18px;color:var(--mute);font-size:.85rem;align-items:center;margin-top:6px}
-@media(min-width:720px){.meta{margin:0;justify-content:flex-end;min-width:290px}}
+.name+.badge{margin-left:8px}
+.badge{font-size:.72rem;font-weight:600;border:1px solid var(--accent);color:var(--accent);border-radius:999px;padding:1px 8px;white-space:nowrap}
+.desc{margin:2px 0 0;color:var(--mute);font-size:.95rem;overflow-wrap:anywhere}
+.meta{display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--mute);font-size:.85rem;align-items:center;margin-top:6px}
+@media(min-width:720px){.meta{margin:0;justify-content:flex-end;min-width:290px;max-width:340px}}
 .lang{display:inline-flex;align-items:center;gap:6px}
 .lang i{width:10px;height:10px;border-radius:50%;background:var(--c)}
 .empty{padding:28px 20px;color:var(--mute)}
+.acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.act{font:500 .85rem var(--sans);color:var(--mute);background:transparent;border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer}
+.act:hover{border-color:var(--accent);color:var(--text)}
+.act[aria-pressed="true"]{color:var(--accent);border-color:var(--accent)}
+.act.del:hover{border-color:var(--danger);color:var(--danger)}
+.replies{margin-top:14px;padding-left:14px;border-left:2px solid var(--line);display:grid;gap:12px}
+.rp{font-size:.92rem}
+.rp small{color:var(--mute)}
+.rp p{margin:2px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.rf{display:grid;gap:8px;justify-items:start}
+.link{background:none;border:0;color:var(--accent);font:600 .88rem var(--sans);cursor:pointer;padding:0}
+.banner{margin:0 0 14px;padding:12px 16px;border:1px solid var(--line);border-radius:10px;background:var(--surf);color:var(--mute);font-size:.92rem;overflow-wrap:anywhere}
 
+/* ── auth page (#/login, #/signup) ─────────────────────────────────────── */
+.authpage{display:none;flex:1 0 auto;width:100%;place-items:center;padding-block:56px 88px}
+body[data-route="auth"] main{display:none}
+body[data-route="auth"] .authpage{display:grid}
+.authcard{width:min(440px,100%);border:1px solid var(--line);border-radius:16px;background:var(--surf);padding:26px;box-shadow:0 30px 70px -40px #000}
+.authcard h2{margin:0 0 6px;font-size:clamp(1.5rem,5vw,1.9rem)}
+.authsub{margin:0 0 18px;color:var(--mute);font-size:.94rem}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--mute);text-decoration:none;font-size:.88rem;margin-bottom:18px}
+.back:hover{color:var(--text)}
+.switch{margin:16px 0 0;color:var(--mute);font-size:.9rem;text-align:center}
+.switch a{color:var(--accent);text-decoration:none;font-weight:600}
+.switch a:hover{text-decoration:underline}
+.notice{margin:14px 0 0;padding:10px 12px;border:1px dashed var(--line);border-radius:8px;color:var(--mute);font-size:.84rem}
+
+/* ── about / license ───────────────────────────────────────────────────── */
 .tm{font-size:.5em;font-weight:600;vertical-align:super;margin-left:1px;letter-spacing:0}
-.about,.license{padding:0 0 80px}
+.about,.license{padding-block:0 80px}
 .about-grid{display:grid;gap:28px}
 @media(min-width:900px){.about-grid{grid-template-columns:1.3fr 1fr;gap:56px}}
 .about p{color:var(--mute);max-width:36em;margin:16px 0 0}
-.credits{margin:0;border:1px solid var(--line);border-radius:14px;background:var(--surf);align-self:start}
+.credits{margin:0;border:1px solid var(--line);border-radius:14px;background:var(--surf);align-self:start;overflow:hidden}
 .credits div{display:flex;justify-content:space-between;gap:16px;padding:14px 18px;border-top:1px solid var(--line)}
 .credits div:first-child{border-top:0}
 .credits dt{color:var(--mute)}
@@ -90,61 +143,53 @@ h2{font-weight:800;font-size:clamp(1.6rem,4vw,2.2rem);letter-spacing:-.025em;lin
 .terms li{counter-increment:t;display:grid;grid-template-columns:2rem 1fr;gap:8px;padding:16px 0;border-bottom:1px solid var(--line);color:var(--mute)}
 .terms li::before{content:counter(t);font-family:var(--mono);color:var(--accent)}
 .terms b{color:var(--text);font-weight:600}
-footer .wrap.legal{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 24px;margin-top:32px;padding-top:20px;border-top:1px solid var(--line);color:var(--mute);font-size:.85rem}
-.cl{display:inline-flex;align-items:center;gap:8px}
-footer{border-top:1px solid var(--line);padding:48px 0 40px}
+
+/* ── footer ────────────────────────────────────────────────────────────── */
+footer{flex:0 0 auto;border-top:1px solid var(--line);padding:48px 0 40px;background:rgba(11,8,23,.5)}
 footer .wrap{display:grid;gap:28px}
 @media(min-width:720px){footer .wrap{grid-template-columns:1fr auto;align-items:end}}
+footer .wrap.legal{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 24px;margin-top:32px;padding-top:20px;border-top:1px solid var(--line);color:var(--mute);font-size:.85rem}
+.cl{display:inline-flex;align-items:center;gap:8px}
 .wordmark{width:min(260px,70%);height:auto;aspect-ratio:560/94}
 .fl{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:20px}
 .fl a{color:var(--mute);text-decoration:none;font-size:.92rem}
 .fl a:hover{color:var(--text)}
 .note{color:var(--mute);font-size:.85rem;max-width:30em;margin:0}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 
-[hidden]{display:none!important}
-nav{display:none}
-.auth{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:.9rem}
-@media(min-width:720px){nav{display:flex;margin-left:auto}.auth{margin-left:8px}}
-@media(max-width:559px){.auth .who{display:none}}
-.hero{display:grid;gap:28px;padding:48px 0 72px;align-items:center}
-.hero-cat{width:120px;height:auto;aspect-ratio:450/413}
-@media(min-width:900px){.hero{grid-template-columns:1.3fr .7fr;gap:56px;padding:88px 0 104px}.hero-cat{width:280px;justify-self:center}}
-.head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
-.repos .head h2{margin:0}
-.cat{background:transparent;color:var(--mute);border:1px solid var(--line);cursor:pointer}
-.cat[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
-.row{display:block}
-.top{display:grid;gap:4px 16px}
-@media(min-width:720px){.top{grid-template-columns:1fr auto;align-items:center}}
-.name+.badge{margin-left:8px}
-.badge{font-size:.72rem;font-weight:600;border:1px solid var(--accent);color:var(--accent);border-radius:999px;padding:1px 8px}
-.acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
-.act{font:500 .85rem var(--sans);color:var(--mute);background:transparent;border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer}
-.act:hover{border-color:var(--accent);color:var(--text)}
-.act[aria-pressed="true"]{color:var(--accent);border-color:var(--accent)}
-.act.del:hover{border-color:#D6456B;color:#D6456B}
-.replies{margin-top:14px;padding-left:14px;border-left:2px solid var(--line);display:grid;gap:12px}
-.rp{font-size:.92rem}
-.rp small{color:var(--mute)}
-.rp p{margin:2px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
-.rf{display:grid;gap:8px;justify-items:start}
-.link{background:none;border:0;color:var(--accent);font:600 .88rem var(--sans);cursor:pointer;padding:0}
-.banner{margin:0 0 14px;padding:12px 16px;border:1px solid var(--line);border-radius:10px;background:var(--surf);color:var(--mute);font-size:.92rem}
-dialog{border:1px solid var(--line);border-radius:14px;background:var(--surf);color:var(--text);padding:22px;width:min(420px,calc(100% - 32px))}
-dialog::backdrop{background:rgba(10,6,24,.6)}
+/* ── dialogs ───────────────────────────────────────────────────────────── */
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--surf);color:var(--text);padding:22px;margin:auto;width:min(440px,calc(100% - 32px));max-height:calc(100dvh - 32px);overflow:auto;box-shadow:0 30px 80px -30px #000}
+dialog::backdrop{background:rgba(8,5,18,.72);backdrop-filter:blur(2px)}
 dialog h3{margin:0 0 14px;font-size:1.25rem;letter-spacing:-.01em}
 .f{display:grid;gap:12px}
 .f label{display:grid;gap:5px;font-size:.88rem;color:var(--mute)}
-.f input,.f textarea,.rf textarea{font:400 .95rem var(--sans);color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;width:100%}
-.f .chk{display:flex;gap:8px;align-items:center}
-.f .chk input{width:auto}
-.msg{margin:0;font-size:.88rem;color:#D6456B;min-height:1.2em}
-.f .end{display:flex;gap:12px;align-items:center;justify-content:space-between}
+.f input,.f textarea,.rf textarea{font:400 .95rem var(--sans);color:var(--text);background:var(--code);border:1px solid var(--line);border-radius:8px;padding:10px 12px;width:100%;min-width:0}
+.f input:focus,.f textarea:focus,.rf textarea:focus{border-color:var(--accent);outline:none}
+.f .chk{display:flex;gap:8px;align-items:center;font-size:.88rem;color:var(--mute)}
+.f .chk input{width:auto;accent-color:var(--accent)}
+.msg{margin:0;font-size:.88rem;color:var(--danger);min-height:0}
+.msg:empty{display:none}
+.msg.ok{color:var(--ok)}
+.f .end{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+
+/* ── cookies ───────────────────────────────────────────────────────────── */
+.cookies{position:fixed;z-index:60;left:16px;right:16px;max-width:800px;margin:0 auto;
+  bottom:calc(16px + env(safe-area-inset-bottom,0px));
+  display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between;
+  padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:var(--surf);
+  box-shadow:0 24px 60px -24px #000;color:var(--mute);font-size:.88rem}
+.cookies p{margin:0;max-width:56ch}
+.cookies p b{color:var(--text);font-weight:600}
+.cookies .cx{display:flex;flex-wrap:wrap;gap:8px}
+.cookies .btn{padding:8px 12px;font-size:.86rem}
+body.has-cookies footer{padding-bottom:150px}
+
+[hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
 </head>
-<body>
+<body data-route="site">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="cat" viewBox="0 0 450 413"><path fill="currentColor" fill-rule="evenodd" d="M191.6 403.0C79.1 393.0 18.9 334.8 15.4 232.5L14.8 216.5L27.4 116.2C36.2 46.5 40.5 15.2 41.5 13.6C45.0 8.3 52.7 7.5 58.6 11.9C60.7 13.5 85.6 32.7 113.8 54.7L165.1 94.7L172.4 93.0C203.6 85.5 245.3 85.5 276.5 92.9L284.3 94.8L336.4 54.2C365.1 31.9 390.0 12.6 391.9 11.3C396.7 8.0 402.1 8.2 406.1 11.8L409.3 14.7L422.2 117.1C434.2 212.5 435.0 220.3 434.5 231.0C429.2 332.8 376.5 387.8 271.0 401.6C256.5 403.5 207.1 404.3 191.6 403.0ZM266.0 379.5C350.8 369.5 396.4 331.0 409.1 259.0C413.8 232.6 413.5 227.7 401.6 132.0C395.8 85.0 390.6 45.3 390.2 43.8C389.5 41.2 388.3 42.1 340.2 79.6C301.4 109.8 290.3 118.0 288.0 118.0C286.4 118.0 280.5 116.9 274.8 115.5C242.2 107.6 208.9 107.6 173.9 115.6C167.5 117.1 161.2 118.0 159.8 117.7C158.5 117.3 135.4 99.9 108.5 79.0C81.3 57.8 59.4 41.5 59.3 42.2C59.1 42.9 54.0 83.3 47.9 132.0C37.6 214.3 36.9 221.3 37.5 232.0C42.6 327.2 95.7 374.9 204.0 381.4C216.4 382.1 253.6 381.0 266.0 379.5ZM186.7 323.6C178.4 320.6 169.0 312.6 169.0 308.6C169.0 305.6 172.2 302.0 174.9 302.0C176.0 302.0 178.8 303.6 181.2 305.6C193.1 315.6 202.5 315.2 213.5 304.0L218.3 299.1L208.6 287.1C201.6 278.4 198.9 274.4 199.2 272.8L199.5 270.5L223.9 270.2C256.1 269.9 255.5 269.3 241.5 286.3C236.3 292.7 232.0 298.5 232.0 299.3C232.0 301.4 240.6 308.8 245.5 311.1C253.0 314.6 258.4 313.4 267.9 306.1C274.3 301.3 275.3 301.2 278.5 304.5C282.0 307.9 281.6 309.8 276.2 315.0C262.7 328.0 244.2 328.4 230.5 315.8L225.0 310.8L220.3 315.0C210.1 324.0 197.2 327.3 186.7 323.6ZM144.1 252.5C131.8 248.6 126.7 234.5 133.5 223.5C141.9 210.0 161.5 211.1 168.1 225.5C175.3 241.0 160.4 257.8 144.1 252.5ZM293.6 252.8C285.7 250.6 277.4 238.3 279.4 231.8C279.7 231.1 280.1 229.3 280.4 227.8C282.6 217.9 296.7 211.4 306.8 215.5C329.4 225.0 317.3 259.3 293.6 252.8Z"/></symbol><symbol id="word" viewBox="0 0 560 94"><path fill="currentColor" fill-rule="evenodd" d="M437.9 85.7C430.1 81.5 429.9 82.3 447.4 46.0C456.0 28.2 464.0 12.6 465.2 11.3C468.2 8.1 474.8 8.1 477.8 11.3C479.9 13.6 509.4 73.9 510.5 78.2C511.3 81.3 507.2 85.6 501.8 87.2C496.4 88.8 495.3 87.9 490.2 78.2L485.9 70.0L471.5 70.0L457.0 70.0L453.0 78.0C447.6 88.7 445.6 89.7 437.9 85.7ZM8.2 86.0C4.4 84.4 4.0 81.2 4.0 48.0C4.0 9.1 4.0 9.0 13.3 9.0C20.2 9.0 20.7 9.4 34.1 27.1C43.8 39.7 46.6 42.8 47.5 41.8C48.2 41.1 53.1 34.7 58.5 27.5C72.8 8.5 72.3 9.0 79.2 9.0C89.6 9.0 89.1 7.2 88.8 48.0C88.5 88.3 88.9 86.5 79.6 86.5C70.2 86.5 70.1 86.3 69.8 62.3L69.5 41.8L61.5 52.9C47.9 71.7 45.1 71.6 30.9 52.0L23.5 41.8L22.9 63.1C22.6 74.9 22.3 84.6 22.2 84.7C19.5 86.7 11.9 87.4 8.2 86.0ZM124.5 85.8C121.1 83.9 121.0 83.4 121.0 47.9C121.0 15.2 121.1 13.1 122.9 10.9L124.8 8.5L151.5 8.5L178.2 8.5L180.1 10.9C182.5 13.8 182.7 21.6 180.4 24.8C178.9 26.9 178.4 27.0 159.4 27.0L140.0 27.0L140.0 32.4L140.0 37.8L153.6 38.2C169.4 38.6 170.0 38.9 170.0 47.7C170.0 56.3 168.7 57.0 153.0 57.0L140.0 57.0L140.0 62.5L140.0 68.0L159.0 68.0C176.7 68.0 178.1 68.1 180.0 70.0C183.1 73.1 182.8 81.3 179.5 84.5L177.1 87.0L151.8 87.0C134.8 86.9 125.8 86.6 124.5 85.8ZM235.8 85.5C232.8 83.8 233.1 84.5 219.5 45.7C214.0 29.8 210.0 16.8 210.2 15.2C210.5 12.1 217.4 8.0 222.2 8.0C226.1 8.0 227.2 10.1 234.4 31.6L240.7 50.5L246.9 31.9C253.8 11.2 255.2 9.0 261.6 9.0C267.9 9.0 269.2 11.0 276.0 31.4C279.4 41.6 282.3 50.0 282.5 50.0C282.7 50.0 285.6 41.6 288.9 31.2C296.3 8.4 296.7 7.6 302.8 8.3C308.5 8.9 312.4 11.8 312.8 15.6C312.9 17.3 308.4 31.8 301.8 51.0C290.7 83.0 290.4 83.5 286.9 85.4C282.9 87.6 279.1 87.1 276.1 84.1C275.1 83.1 271.5 73.9 268.0 63.6C264.6 53.4 261.6 45.1 261.5 45.2C261.4 45.4 258.5 53.6 255.1 63.5C248.5 82.5 247.8 84.0 244.3 85.8C241.5 87.4 239.1 87.3 235.8 85.5ZM344.7 85.0C341.6 82.5 340.3 77.2 342.0 73.9C342.7 72.6 350.5 61.7 359.2 49.6L375.1 27.5L360.0 27.0C342.5 26.4 341.0 25.7 341.0 17.5C341.0 8.6 341.2 8.5 369.4 8.2C396.2 7.8 399.5 8.4 401.9 13.6C404.5 19.3 405.3 17.8 382.2 49.7C374.9 59.8 369.0 68.2 369.0 68.5C369.0 68.8 376.1 69.0 384.8 69.0C403.6 69.0 404.0 69.2 404.0 78.3C404.0 87.1 404.4 87.0 373.4 87.0C348.6 87.0 347.1 86.9 344.7 85.0ZM478.0 53.5C478.0 53.3 476.5 50.1 474.8 46.5L471.6 40.0L468.3 46.2C464.1 54.4 464.0 54.0 471.5 54.0C475.1 54.0 478.0 53.8 478.0 53.5ZM527.7 33.3C527.3 33.0 527.0 30.7 527.0 28.3C527.0 24.7 526.7 24.0 525.0 24.0C523.7 24.0 523.0 23.3 523.0 22.0C523.0 20.2 523.7 20.0 529.5 20.0C535.3 20.0 536.0 20.2 536.0 22.0C536.0 23.3 535.3 24.0 534.0 24.0C532.3 24.0 532.0 24.7 532.0 29.0C532.0 33.9 530.1 35.8 527.7 33.3ZM537.4 32.6C537.1 31.9 537.0 28.8 537.2 25.9C537.5 19.8 540.0 18.1 542.7 22.0L544.2 24.1L546.6 21.9C550.4 18.3 552.0 19.9 552.0 27.5C552.0 33.4 551.8 34.0 550.0 34.0C548.9 34.0 547.6 33.2 547.2 32.2C546.2 29.7 542.0 29.5 542.0 32.0C542.0 34.3 538.3 34.8 537.4 32.6Z"/></symbol></defs></svg>
+
 <header>
   <div class="wrap">
     <a class="brand" href="#top"><svg class="logo" width="34" height="31" viewBox="0 0 450 413" aria-hidden="true"><use href="#cat"/></svg>Mewza<sup class="tm">™</sup></a>
@@ -152,6 +197,7 @@ dialog h3{margin:0 0 14px;font-size:1.25rem;letter-spacing:-.01em}
     <div class="auth" id="auth"></div>
   </div>
 </header>
+
 <main id="top">
   <section class="wrap hero">
     <div>
@@ -179,7 +225,8 @@ dialog h3{margin:0 0 14px;font-size:1.25rem;letter-spacing:-.01em}
     </div>
     <ul class="list" id="list"></ul>
   </section>
-<section class="wrap about" id="about">
+
+  <section class="wrap about" id="about">
     <div class="about-grid">
       <div>
         <h2>About Mewza<sup class="tm">™</sup></h2>
@@ -209,6 +256,25 @@ dialog h3{margin:0 0 14px;font-size:1.25rem;letter-spacing:-.01em}
     </ol>
   </section>
 </main>
+
+<!-- the log in / sign up page: #/login or #/signup -->
+<section class="wrap authpage" id="authPage" aria-live="polite">
+  <div class="authcard">
+    <a class="back" href="#top">← Back to Mewza</a>
+    <h2 id="authTitle">Log in</h2>
+    <p class="authsub" id="authSub">Welcome back.</p>
+    <form class="f" id="authForm" novalidate>
+      <label id="unw" hidden>Username<input id="un" autocomplete="username" maxlength="20" placeholder="your_username"></label>
+      <label>Email<input id="em" type="email" autocomplete="email" placeholder="you@example.com" required></label>
+      <label>Password<input id="pw" type="password" minlength="8" autocomplete="current-password" placeholder="At least 8 characters" required></label>
+      <p class="msg" id="authMsg" role="alert"></p>
+      <div class="end"><button class="btn primary" id="authGo" type="submit">Log in</button><button class="link" id="authSwap" type="button">Create an account</button></div>
+    </form>
+    <p class="switch" id="authSwitchWrap">New here? <a href="#/signup" id="authSwitch">Create an account</a></p>
+    <p class="notice" id="authNotice" hidden></p>
+  </div>
+</section>
+
 <footer id="docs">
   <div class="wrap">
     <div>
@@ -227,18 +293,6 @@ dialog h3{margin:0 0 14px;font-size:1.25rem;letter-spacing:-.01em}
   </div>
 </footer>
 
-<dialog id="authDlg">
-  <form class="f" id="authForm">
-    <h3 id="authTitle">Log in</h3>
-    <label id="unw" hidden>Username<input id="un" autocomplete="username" maxlength="20"></label>
-    <label>Email<input id="em" type="email" autocomplete="email" required></label>
-    <label>Password<input id="pw" type="password" minlength="8" autocomplete="current-password" required></label>
-    <p class="msg" id="authMsg" role="alert"></p>
-    <div class="end"><button class="btn primary" id="authGo" type="submit">Log in</button><button class="link" id="authSwap" type="button">Create an account</button></div>
-    <button class="link" type="button" data-close>Cancel</button>
-  </form>
-</dialog>
-
 <dialog id="repoDlg">
   <form class="f" id="repoForm">
     <h3>New repository</h3>
@@ -252,6 +306,11 @@ dialog h3{margin:0 0 14px;font-size:1.25rem;letter-spacing:-.01em}
   </form>
 </dialog>
 
+<div class="cookies" id="cookies" role="dialog" aria-label="Cookies" hidden>
+  <p><b>Cookies and storage.</b> Mewza keeps your login session and a few preferences in your browser. Nothing is sold or shared. Read the <a href="#license" style="color:var(--accent)">license</a> or just pick one.</p>
+  <div class="cx"><button class="btn primary" id="cookieOk" type="button">Accept</button><button class="btn" id="cookieNo" type="button">Essential only</button></div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
 (function(){
@@ -259,19 +318,21 @@ dialog h3{margin:0 0 14px;font-size:1.25rem;letter-spacing:-.01em}
 var CFG={url:"PASTE_YOUR_SUPABASE_URL",key:"PASTE_YOUR_SUPABASE_ANON_KEY"};
 
 var sb=null;
-try{if(window.supabase&&/^https:\/\//.test(CFG.url))sb=window.supabase.createClient(CFG.url,CFG.key)}catch(e){}
+try{if(window.supabase&&/^https:\/\/.+\.supabase\.co\/?$/.test(CFG.url))sb=window.supabase.createClient(CFG.url,CFG.key)}catch(e){sb=null}
 var S={me:null,name:"",admin:false,repos:[],favs:[],replies:[],onlyFav:false,open:{},draft:{}};
-var mode="login";
+var mode="login",PENDING=null;
+
 function $(i){return document.getElementById(i)}
 function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
 function safeUrl(u){try{var x=new URL(u);return /^https?:$/.test(x.protocol)?x.href:null}catch(e){return null}}
 function ago(d){var s=Math.max(0,(Date.now()-new Date(d))/1000),u=[["year",31536000],["month",2592000],["day",86400],["hour",3600],["minute",60]];
   for(var i=0;i<u.length;i++){var n=Math.floor(s/u[i][1]);if(n>=1)return n+" "+u[i][0]+(n>1?"s":"")+" ago"}return "just now"}
-function hue(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%360;return "hsl("+h+" 60% 62%)"}
-function uname(r){return r.profiles&&r.profiles.username||"unknown"}
-function note(t){var b=$("banner");b.textContent=t;b.hidden=!t}
-function mine(r){return S.admin||(S.me&&(r.owner||r.author)===S.me.id)}
+function hue(s){var h=0;s=s||"";for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%360;return "hsl("+h+" 60% 62%)"}
+function uname(r){return (r.profiles&&r.profiles.username)||"unknown"}
+function note(t,bad){var b=$("banner");b.textContent=t||"";b.hidden=!t;b.style.color=bad?"var(--danger)":""}
+function mine(r){return S.admin||!!(S.me&&(r.owner||r.author)===S.me.id)}
 
+/* ── repos list ───────────────────────────────────────────────────────── */
 function render(){
   var list=$("list");list.textContent="";
   var fav={},count={};
@@ -283,7 +344,11 @@ function render(){
     return w.every(function(x){return k.indexOf(x)>-1})});
   $("cnt").textContent=S.repos.length;$("fcnt").textContent=Object.keys(fav).length;$("stat").textContent=S.repos.length;
   $("allTab").setAttribute("aria-pressed",String(!S.onlyFav));$("favTab").setAttribute("aria-pressed",String(S.onlyFav));
-  if(!rows.length){list.appendChild(el("li","empty",!sb?"Connect Supabase to load repositories.":S.onlyFav?"You haven’t favourited anything yet.":S.repos.length?"No repositories match that search.":"No repositories yet. Be the first to add one."));return}
+  if(!rows.length){list.appendChild(el("li","empty",
+    !sb?"Connect Supabase to load repositories.":
+    S.onlyFav?"You haven’t favourited anything yet.":
+    S.repos.length?"No repositories match that search.":
+    "No repositories yet. Be the first to add one."));return}
   rows.forEach(function(r){list.appendChild(row(r,!!fav[r.id],count[r.id]||0))});
 }
 function row(r,fav,fc){
@@ -316,94 +381,202 @@ function thread(r,rs){
     ta.maxLength=500;ta.rows=2;ta.placeholder="Write a reply";ta.value=S.draft[r.id]||"";ta.oninput=function(){S.draft[r.id]=ta.value};
     b.type="submit";f.onsubmit=function(e){e.preventDefault();reply(r.id,ta.value.trim())};
     f.appendChild(ta);f.appendChild(b);t.appendChild(f);
-  }else{var l=el("button","link","Log in to reply");l.type="button";l.onclick=function(){openAuth("login")};t.appendChild(l)}
+  }else{var l=el("button","link","Log in to reply");l.type="button";l.onclick=function(){goAuth("login")};t.appendChild(l)}
   return t;
 }
 
+/* ── data ─────────────────────────────────────────────────────────────── */
 async function load(){
   if(!sb){render();return}
-  var a=await Promise.all([
-    sb.from("repos").select("*,profiles(username)").order("created_at",{ascending:false}),
-    sb.from("favorites").select("repo_id,user_id"),
-    sb.from("replies").select("*,profiles(username)").order("created_at")]);
-  if(a[0].error){note("Couldn’t load repositories: "+a[0].error.message);return}
-  note("");S.repos=a[0].data||[];S.favs=a[1].data||[];S.replies=a[2].data||[];render();
+  try{
+    var a=await Promise.all([
+      sb.from("repos").select("*,profiles(username)").order("created_at",{ascending:false}),
+      sb.from("favorites").select("repo_id,user_id"),
+      sb.from("replies").select("*,profiles(username)").order("created_at")]);
+    if(a[0].error){note("Couldn’t load repositories: "+a[0].error.message,true);render();return}
+    note("");S.repos=a[0].data||[];S.favs=(a[1]&&a[1].data)||[];S.replies=(a[2]&&a[2].data)||[];render();
+  }catch(e){note("Couldn’t load repositories: "+(e&&e.message||e),true);render()}
 }
 async function session(user){
-  S.me=user;S.name="";S.admin=false;
-  if(user){var p=await sb.from("profiles").select("username,is_admin").eq("id",user.id).single();if(p.data){S.name=p.data.username;S.admin=!!p.data.is_admin}}
+  S.me=user||null;S.name="";S.admin=false;
+  if(S.me&&sb){
+    try{
+      var p=await sb.from("profiles").select("username,is_admin").eq("id",S.me.id).maybeSingle();
+      if(p&&p.data){S.name=p.data.username||"";S.admin=!!p.data.is_admin}
+    }catch(e){}
+    if(!S.name)S.name=(S.me.email||"you").split("@")[0];
+  }
   authUI();await load();
+  if(S.me){
+    if(document.body.dataset.route==="auth")location.hash="#repos";
+    if(PENDING){var p2=PENDING;PENDING=null;if(p2==="new")openRepo()}
+  }else if(document.body.dataset.route==="auth"&&!PENDING){
+    // logged out on the auth page: nothing to do
+  }
 }
 function authUI(){
   var a=$("auth");a.textContent="";if(!sb)return;
-  if(S.me){a.appendChild(el("span","who","@"+(S.name||"you")));if(S.admin)a.appendChild(el("span","badge who","Admin"));
-    var o=el("button","btn","Log out");o.type="button";o.onclick=function(){sb.auth.signOut()};a.appendChild(o)}
-  else{var i=el("button","btn primary","Log in");i.type="button";i.onclick=function(){openAuth("login")};a.appendChild(i)}
+  if(S.me){
+    a.appendChild(el("span","who","@"+(S.name||"you")));
+    if(S.admin)a.appendChild(el("span","badge who","Admin"));
+    var o=el("button","btn","Log out");o.type="button";o.onclick=function(){sb.auth.signOut().then(function(){session(null)})};a.appendChild(o);
+  }else{
+    var i=el("button","btn primary","Log in");i.type="button";i.onclick=function(){goAuth("login")};a.appendChild(i);
+  }
 }
 
 async function toggleFav(id,on){
-  if(!S.me){openAuth("login");return}
-  var r=on?await sb.from("favorites").delete().match({user_id:S.me.id,repo_id:id}):await sb.from("favorites").insert({repo_id:id});
-  if(r.error){note(r.error.message);return}
+  if(!S.me){goAuth("login");return}
+  var r=on?await sb.from("favorites").delete().match({user_id:S.me.id,repo_id:id}):await sb.from("favorites").insert({repo_id:id,user_id:S.me.id});
+  if(r.error){note(r.error.message,true);return}
   S.favs=S.favs.filter(function(f){return !(f.user_id===S.me.id&&f.repo_id===id)});
   if(!on)S.favs.push({user_id:S.me.id,repo_id:id});render();
 }
 async function reply(id,body){
   if(!body)return;
-  var r=await sb.from("replies").insert({repo_id:id,body:body}).select("*,profiles(username)").single();
-  if(r.error){note(r.error.message);return}S.replies.push(r.data);S.draft[id]="";render();
+  if(!S.me){goAuth("login");return}
+  var r=await sb.from("replies").insert({repo_id:id,body:body,author:S.me.id}).select("*,profiles(username)").single();
+  if(r.error){note(r.error.message,true);return}S.replies.push(r.data);S.draft[id]="";render();
 }
 async function delReply(x){
   var r=await sb.from("replies").delete().eq("id",x.id);
-  if(r.error){note(r.error.message);return}S.replies=S.replies.filter(function(y){return y.id!==x.id});render();
+  if(r.error){note(r.error.message,true);return}S.replies=S.replies.filter(function(y){return y.id!==x.id});render();
 }
 async function removeRepo(r){
   if(!confirm("Remove “"+r.name+"”? Its replies and favourites are deleted too."))return;
   var d=await sb.from("repos").delete().eq("id",r.id);
-  if(d.error){note(d.error.message);return}S.repos=S.repos.filter(function(y){return y.id!==r.id});render();
+  if(d.error){note(d.error.message,true);return}S.repos=S.repos.filter(function(y){return y.id!==r.id});render();
 }
 
+/* ── auth page + routing ──────────────────────────────────────────────── */
 function setMode(m){
   mode=m;var s=m==="signup";
-  $("authTitle").textContent=s?"Create an account":"Log in";$("unw").hidden=!s;
-  $("authGo").textContent=s?"Create account":"Log in";$("authSwap").textContent=s?"I already have an account":"Create an account";
+  $("authTitle").textContent=s?"Create an account":"Log in";
+  $("unw").hidden=!s;
+  $("authGo").textContent=s?"Create account":"Log in";
+  $("authSwap").textContent=s?"I already have an account":"Create an account";
+  $("authSwitch").textContent=s?"Log in instead":"Create an account";
+  $("authSwitch").setAttribute("href",s?"#/login":"#/signup");
   $("pw").autocomplete=s?"new-password":"current-password";
+  $("authNotice").hidden=!!sb;
+  if(!sb)$("authNotice").textContent="Not connected yet: add your Supabase URL and anon key at the top of the script in index.html. The SQL to run is in schema.sql.";
 }
-function openAuth(m){
-  if(!sb){note("Not connected yet: add your Supabase URL and anon key at the top of the script in index.html.");return}
-  setMode(m);$("authMsg").textContent="";$("authDlg").showModal();
+function goAuth(m,next){
+  if(next)PENDING=next;
+  var h=m==="signup"?"#/signup":"#/login";
+  if(location.hash===h)route();else location.hash=h;
 }
-$("authSwap").onclick=function(){setMode(mode==="login"?"signup":"login")};
+function route(){
+  var h=(location.hash||"").replace(/^#\/?/,""),m=/^(login|signup)$/.exec(h);
+  if(m){
+    document.body.dataset.route="auth";
+    setMode(m[1]);
+    $("authMsg").textContent="";$("authMsg").className="msg";
+    $("authSub").textContent=PENDING==="new"
+      ? "Log in, or create an account, to add your repository to Mewza."
+      : m[1]==="signup"
+        ? "Pick a username. You can change nothing else later, so make it count."
+        : "Welcome back. Your repositories, favourites and replies are waiting.";
+    window.scrollTo(0,0);
+    return;
+  }
+  document.body.dataset.route="site";
+  if(h==="new"){
+    location.hash="#repos";
+    if(S.me){PENDING=null;openRepo()}else{PENDING="new";goAuth("login")}
+    return;
+  }
+  var target=h&&document.getElementById(h);
+  if(target)setTimeout(function(){target.scrollIntoView({block:"start"})},0);
+}
+function openRepo(){
+  if(!sb){
+    note("Not connected yet: add your Supabase URL and anon key at the top of the script in index.html.",true);
+    $("banner").scrollIntoView({block:"center"});
+    return;
+  }
+  if(!S.me){PENDING="new";goAuth("login");return}
+  $("pvw").hidden=!S.admin;
+  $("repoMsg").textContent="";$("repoMsg").className="msg";
+  if(!$("repoDlg").open)$("repoDlg").showModal();
+}
+function closeRepo(){$("repoDlg").close()}
+
+$("authSwap").onclick=function(){goAuth(mode==="login"?"signup":"login")};
 $("authForm").onsubmit=async function(e){
-  e.preventDefault();var m=$("authMsg"),em=$("em").value.trim(),pw=$("pw").value,un=$("un").value.trim(),r;m.textContent="";
-  if(mode==="signup"){
-    if(!/^[A-Za-z0-9_]{3,20}$/.test(un)){m.textContent="Username: 3 to 20 letters, numbers or underscores.";return}
-    r=await sb.auth.signUp({email:em,password:pw,options:{data:{username:un}}});
-    if(!r.error&&!r.data.session){m.textContent="Check your email to confirm the account, then log in.";return}
-  }else r=await sb.auth.signInWithPassword({email:em,password:pw});
-  if(r.error){m.textContent=r.error.message;return}
-  $("authDlg").close();
+  e.preventDefault();
+  var m=$("authMsg"),em=$("em").value.trim(),pw=$("pw").value,un=$("un").value.trim(),r;
+  m.className="msg";m.textContent="";
+  if(!sb){m.textContent="Not connected yet: add your Supabase URL and anon key at the top of the script in index.html.";return}
+  if(!em){m.textContent="Enter your email.";return}
+  if(pw.length<8){m.textContent="Password must be at least 8 characters.";return}
+  $("authGo").disabled=true;
+  try{
+    if(mode==="signup"){
+      if(!/^[A-Za-z0-9_]{3,20}$/.test(un)){m.textContent="Username: 3 to 20 letters, numbers or underscores.";return}
+      r=await sb.auth.signUp({email:em,password:pw,options:{data:{username:un}}});
+      if(r.error){m.textContent=r.error.message;return}
+      if(!r.data.session){m.className="msg ok";m.textContent="Check your email to confirm the account, then log in.";return}
+    }else{
+      r=await sb.auth.signInWithPassword({email:em,password:pw});
+      if(r.error){m.textContent=r.error.message;return}
+    }
+    $("pw").value="";
+    await session(r.data.user||r.data.session&&r.data.session.user||null);
+  }catch(ex){m.textContent=(ex&&ex.message)||"Something went wrong. Try again."}
+  finally{$("authGo").disabled=false}
 };
-[].forEach.call(document.querySelectorAll(".js-new"),function(b){b.onclick=function(){
-  if(!S.me){openAuth("login");return}
-  $("pvw").hidden=!S.admin;$("repoMsg").textContent="";$("repoDlg").showModal();
-}});
+
+/* ── new repository ───────────────────────────────────────────────────── */
+document.addEventListener("click",function(e){
+  var b=e.target.closest&&e.target.closest(".js-new");
+  if(!b)return;
+  e.preventDefault();
+  openRepo();
+});
 $("repoForm").onsubmit=async function(e){
-  e.preventDefault();var m=$("repoMsg"),n=$("rn").value.trim(),u=$("ru").value.trim();m.textContent="";
+  e.preventDefault();
+  var m=$("repoMsg"),n=$("rn").value.trim(),u=$("ru").value.trim();
+  m.className="msg";m.textContent="";
+  if(!sb){m.textContent="Not connected yet: add your Supabase URL and anon key in index.html.";return}
+  if(!S.me){closeRepo();PENDING="new";goAuth("login");return}
   if(!/^[A-Za-z0-9._-]{2,40}$/.test(n)){m.textContent="Name: 2 to 40 letters, numbers, dots, dashes or underscores.";return}
   if(u&&!safeUrl(u)){m.textContent="The link must start with http:// or https://";return}
-  var r=await sb.from("repos").insert({name:n,description:$("rd").value.trim()||null,language:$("rl").value.trim()||null,url:u||null,is_private:S.admin&&$("pv").checked}).select("*,profiles(username)").single();
-  if(r.error){m.textContent=r.error.message;return}
-  S.repos.unshift(r.data);$("repoForm").reset();$("repoDlg").close();render();
+  try{
+    var r=await sb.from("repos").insert({
+      name:n,
+      description:$("rd").value.trim()||null,
+      language:$("rl").value.trim()||null,
+      url:u||null,
+      owner:S.me.id,
+      is_private:!!(S.admin&&$("pv").checked)}).select("*,profiles(username)").single();
+    if(r.error){m.textContent=r.error.message;return}
+    S.repos.unshift(r.data);$("repoForm").reset();closeRepo();render();
+  }catch(ex){m.textContent=(ex&&ex.message)||"Couldn’t create the repository."}
 };
 [].forEach.call(document.querySelectorAll("[data-close]"),function(b){b.onclick=function(){b.closest("dialog").close()}});
 $("allTab").onclick=function(){S.onlyFav=false;render()};
-$("favTab").onclick=function(){if(!S.me){openAuth("login");return}S.onlyFav=true;render()};
+$("favTab").onclick=function(){if(!S.me){goAuth("login");return}S.onlyFav=true;render()};
 $("search").addEventListener("input",render);
 
+/* ── cookies ──────────────────────────────────────────────────────────── */
+var COOKIE_KEY="mewza.cookies";
+function cookieChoice(){try{return localStorage.getItem(COOKIE_KEY)}catch(e){return null}}
+function setCookies(v){
+  try{localStorage.setItem(COOKIE_KEY,v)}catch(e){}
+  $("cookies").hidden=true;document.body.classList.remove("has-cookies");
+}
+$("cookieOk").onclick=function(){setCookies("all")};
+$("cookieNo").onclick=function(){setCookies("essential")};
+if(!cookieChoice()){$("cookies").hidden=false;document.body.classList.add("has-cookies")}
+
+/* ── boot ─────────────────────────────────────────────────────────────── */
+window.addEventListener("hashchange",route);
 render();
-if(!sb){note("Not connected yet: add your Supabase URL and anon key at the top of the script in index.html. Setup steps are in schema.sql.")}
+route();
+if(!sb){note("Not connected yet: add your Supabase URL and anon key at the top of the script in index.html. Setup steps are in schema.sql.",true)}
 else sb.auth.onAuthStateChange(function(_e,s){setTimeout(function(){session(s?s.user:null)},0)});
+if(sb)sb.auth.getSession().then(function(r){session(r&&r.data?r.data.session&&r.data.session.user:null)}).catch(function(){});
 })();
 </script>
 </body>
