@@ -334,7 +334,7 @@ body.has-cookies footer{padding-bottom:150px}
            as powerful as your Row Level Security rules allow. Never put a
            secret key (sb_secret_...) or the legacy service_role key here:
            those skip every RLS rule and would hand out your whole database. */
-var CFG={url:"https://pzykmhpprgycoerdlnws.supabase.co",key:"PASTE_YOUR_ANON_KEY"};
+var CFG={url:"https://pzykmhpprgycoerdlnws.supabase.co",key:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eWttaHBwcmd5Y29lcmRsbndzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzMDUyODgsImV4cCI6MjEwODg4MTI4OH0.HRPmADkRCuYc9cOx7yXyVPcOA16MZ0l5HHgBuQDi0n8"};
 
 var sb=null;
 try{if(window.supabase&&/^https:\/\/.+\.supabase\.co\/?$/.test(CFG.url))sb=window.supabase.createClient(CFG.url,CFG.key)}catch(e){sb=null}
