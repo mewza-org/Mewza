@@ -1,4 +1,5 @@
--- Mewza database. Supabase dashboard -> SQL Editor -> New query -> paste all of this -> Run.
+-- Mewza database
+-- Supabase dashboard -> SQL Editor -> New query -> paste all of this -> Run.
 
 create table public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
@@ -70,6 +71,6 @@ create policy "replies read"   on public.replies for select using (exists (selec
 create policy "replies add"    on public.replies for insert with check (author = auth.uid() and exists (select 1 from public.repos r where r.id = repo_id));
 create policy "replies remove" on public.replies for delete using (author = auth.uid() or public.is_admin());
 
--- AFTER you have created your own account on the site, make yourself admin.
+-- After you have created your own account on the site, make yourself admin.
 -- Replace abiilityjoy with the username you signed up with, then run this line alone:
 -- update public.profiles set is_admin = true where username = 'abiilityjoy';
