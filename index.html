@@ -171,6 +171,13 @@ dialog h3{margin:0 0 14px;font-size:1.25rem;letter-spacing:-.01em}
 .msg.ok{color:var(--ok)}
 .f .end{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
 
+.hp{position:absolute!important;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;border:0;padding:0}
+.captcha{display:grid;gap:9px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--code)}
+.caplbl{font-size:.82rem;color:var(--mute)}
+.caprow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+#capCode{font-family:var(--mono);font-size:1.2rem;letter-spacing:.32em;color:var(--text);background:var(--surf);border:1px dashed var(--line);border-radius:8px;padding:8px 12px;user-select:none;-webkit-user-select:none;text-decoration:line-through;text-decoration-color:var(--line)}
+.captcha input{font-family:var(--mono);letter-spacing:.18em;text-transform:uppercase}
+
 /* ── cookies ───────────────────────────────────────────────────────────── */
 .cookies{position:fixed;z-index:60;left:16px;right:16px;max-width:800px;margin:0 auto;
   bottom:calc(16px + env(safe-area-inset-bottom,0px));
@@ -264,9 +271,15 @@ body.has-cookies footer{padding-bottom:150px}
     <h2 id="authTitle">Log in</h2>
     <p class="authsub" id="authSub">Welcome back.</p>
     <form class="f" id="authForm" novalidate>
-      <label id="unw" hidden>Username<input id="un" autocomplete="username" maxlength="20" placeholder="your_username"></label>
-      <label>Email<input id="em" type="email" autocomplete="email" placeholder="you@example.com" required></label>
-      <label>Password<input id="pw" type="password" minlength="8" autocomplete="current-password" placeholder="At least 8 characters" required></label>
+      <input id="hp" class="hp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" placeholder="Leave this empty">
+      <label id="unw">Username<input id="un" autocomplete="username" maxlength="20" placeholder="your_username"></label>
+      <label>Password<input id="pw" type="password" minlength="8" autocomplete="current-password" placeholder="At least 8 characters"></label>
+      <label id="pw2w" hidden>Repeat password<input id="pw2" type="password" minlength="8" autocomplete="new-password" placeholder="Same password again"></label>
+      <div class="captcha" id="capw" hidden>
+        <span class="caplbl">Not a robot? Type the code</span>
+        <div class="caprow"><b id="capCode" aria-label="Verification code">·····</b><button class="link" id="capNew" type="button">New code</button></div>
+        <input id="capIn" maxlength="5" autocomplete="off" placeholder="5 characters" aria-label="Type the code above">
+      </div>
       <p class="msg" id="authMsg" role="alert"></p>
       <div class="end"><button class="btn primary" id="authGo" type="submit">Log in</button><button class="link" id="authSwap" type="button">Create an account</button></div>
     </form>
@@ -321,7 +334,7 @@ body.has-cookies footer{padding-bottom:150px}
            as powerful as your Row Level Security rules allow. Never put a
            secret key (sb_secret_...) or the legacy service_role key here:
            those skip every RLS rule and would hand out your whole database. */
-var CFG={url:"https://pzykmhpprgycoerdlnws.supabase.co",key:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eWttaHBwcmd5Y29lcmRsbndzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzMDUyODgsImV4cCI6MjEwODg4MTI4OH0.HRPmADkRCuYc9cOx7yXyVPcOA16MZ0l5HHgBuQDi0n8"};
+var CFG={url:"https://pzykmhpprgycoerdlnws.supabase.co",key:"PASTE_YOUR_ANON_KEY"};
 
 var sb=null;
 try{if(window.supabase&&/^https:\/\/.+\.supabase\.co\/?$/.test(CFG.url))sb=window.supabase.createClient(CFG.url,CFG.key)}catch(e){sb=null}
@@ -458,7 +471,10 @@ async function removeRepo(r){
 function setMode(m){
   mode=m;var s=m==="signup";
   $("authTitle").textContent=s?"Create an account":"Log in";
-  $("unw").hidden=!s;
+  $("unw").hidden=false;
+  $("pw2w").hidden=!s;
+  $("capw").hidden=!s;
+  if(s)newCaptcha();else{$("capIn").value=""}
   $("authGo").textContent=s?"Create account":"Log in";
   $("authSwap").textContent=s?"I already have an account":"Create an account";
   $("authSwitch").textContent=s?"Log in instead":"Create an account";
@@ -481,7 +497,7 @@ function route(){
     $("authSub").textContent=PENDING==="new"
       ? "Log in, or create an account, to add your repository to Mewza."
       : m[1]==="signup"
-        ? "Pick a username. You can change nothing else later, so make it count."
+        ? "Pick a username and a password. No email, no verification."
         : "Welcome back. Your repositories, favourites and replies are waiting.";
     window.scrollTo(0,0);
     return;
@@ -508,27 +524,58 @@ function openRepo(){
 }
 function closeRepo(){$("repoDlg").close()}
 
+/* usernames are the account: no email is collected, so nothing to confirm and
+   nothing that can be used to spam. SUPABASE MUST HAVE "Confirm email" OFF,
+   because a made-up address can never receive the confirmation mail. */
+var ACCOUNT_DOMAIN="@mewza.local";
+function accountEmail(u){return u.toLowerCase()+ACCOUNT_DOMAIN}
+
+var CAP="";
+var CAP_CHARS="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+function newCaptcha(){
+  var s="";
+  for(var i=0;i<5;i++)s+=CAP_CHARS.charAt(Math.floor(Math.random()*CAP_CHARS.length));
+  CAP=s;$("capCode").textContent=s;$("capIn").value="";
+}
+$("capNew").onclick=function(){newCaptcha()};
+
 $("authSwap").onclick=function(){goAuth(mode==="login"?"signup":"login")};
 $("authForm").onsubmit=async function(e){
   e.preventDefault();
-  var m=$("authMsg"),em=$("em").value.trim(),pw=$("pw").value,un=$("un").value.trim(),r;
+  var m=$("authMsg"),un=$("un").value.trim(),pw=$("pw").value,pw2=$("pw2").value,ca=$("capIn").value.trim(),r;
   m.className="msg";m.textContent="";
   if(!sb){m.textContent="Not connected yet: add your Supabase URL and anon key at the top of the script in index.html.";return}
-  if(!em){m.textContent="Enter your email.";return}
+  if($("hp").value){m.textContent="Verification failed. Reload the page and try again.";return}
+  if(!/^[A-Za-z0-9_]{3,20}$/.test(un)){m.textContent="Username: 3 to 20 letters, numbers or underscores.";return}
   if(pw.length<8){m.textContent="Password must be at least 8 characters.";return}
+  if(mode==="signup"){
+    if(pw!==pw2){m.textContent="The two passwords don't match.";$("pw2").value="";return}
+    if(ca.toUpperCase()!==CAP){m.textContent="That code doesn't match. Here is a new one.";newCaptcha();return}
+  }
   $("authGo").disabled=true;
   try{
     if(mode==="signup"){
-      if(!/^[A-Za-z0-9_]{3,20}$/.test(un)){m.textContent="Username: 3 to 20 letters, numbers or underscores.";return}
-      r=await sb.auth.signUp({email:em,password:pw,options:{data:{username:un}}});
-      if(r.error){m.textContent=r.error.message;return}
-      if(!r.data.session){m.className="msg ok";m.textContent="Check your email to confirm the account, then log in.";return}
+      r=await sb.auth.signUp({email:accountEmail(un),password:pw,options:{data:{username:un.toLowerCase()}}});
+      if(r.error){
+        m.textContent=/already|duplicate|registered|database error/i.test(r.error.message)
+          ? "That username is taken. Try another one."
+          : r.error.message;
+        newCaptcha();return;
+      }
+      if(!r.data.session){
+        m.className="msg ok";
+        m.textContent="Account created, but it needs confirming. Turn Confirm email OFF in Supabase → Authentication → Providers → Email, then log in.";
+        return;
+      }
     }else{
-      r=await sb.auth.signInWithPassword({email:em,password:pw});
-      if(r.error){m.textContent=r.error.message;return}
+      r=await sb.auth.signInWithPassword({email:accountEmail(un),password:pw});
+      if(r.error){
+        m.textContent=/invalid/i.test(r.error.message)?"Wrong username or password.":r.error.message;
+        return;
+      }
     }
-    $("pw").value="";
-    await session(r.data.user||r.data.session&&r.data.session.user||null);
+    $("pw").value="";$("pw2").value="";
+    await session(r.data.user||(r.data.session&&r.data.session.user)||null);
   }catch(ex){m.textContent=(ex&&ex.message)||"Something went wrong. Try again."}
   finally{$("authGo").disabled=false}
 };
