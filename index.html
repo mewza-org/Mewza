@@ -311,11 +311,17 @@ body.has-cookies footer{padding-bottom:150px}
   <div class="cx"><button class="btn primary" id="cookieOk" type="button">Accept</button><button class="btn" id="cookieNo" type="button">Essential only</button></div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
 (function(){
-/* 1. Paste your own values from Supabase → Project Settings → API */
-var CFG={url:"PASTE_YOUR_SUPABASE_URL",key:"PASTE_YOUR_SUPABASE_ANON_KEY"};
+/* 1. Paste your own values from Supabase → Settings → API Keys
+      url: your Project URL, like https://abcdefgh.supabase.co
+      key: the anon public key (eyJ...) or the publishable key
+           (sb_publishable_...). Both are meant to ship in a page and are only
+           as powerful as your Row Level Security rules allow. Never put a
+           secret key (sb_secret_...) or the legacy service_role key here:
+           those skip every RLS rule and would hand out your whole database. */
+var CFG={url:"https://pzykmhpprgycoerdlnws.supabase.co",key:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eWttaHBwcmd5Y29lcmRsbndzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzMDUyODgsImV4cCI6MjEwODg4MTI4OH0.HRPmADkRCuYc9cOx7yXyVPcOA16MZ0l5HHgBuQDi0n8"};
 
 var sb=null;
 try{if(window.supabase&&/^https:\/\/.+\.supabase\.co\/?$/.test(CFG.url))sb=window.supabase.createClient(CFG.url,CFG.key)}catch(e){sb=null}
